@@ -1,0 +1,150 @@
+<div class="container" style="margin-top:100px">
+  <div class="row">
+    <div class="col-12">
+      <h2 class="text-info float-left">Student Management System</h2>
+      <button type="button" (click)="addButtonClickFunction()" class="btn btn-info mb-3 float-right" data-toggle="modal"
+        data-target="#exampleModal">
+        <i class="fas fa-plus"></i> Add New Student
+      </button>
+    </div>
+    <div class="col-12">
+      <table class="table table-sm table-stripped">
+        <thead>
+          <tr class="bg-info text-white text-center">
+            <th>Roll No</th>
+            <th>Student Name</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Course Name</th>
+            <th>Department</th>
+            <th>Hobbies</th>
+            <th>Action</th>
+          </tr>
+          <tr *ngFor="let row of employeeData| paginate: { itemsPerPage: 5, currentPage: p, totalItems: total }"
+            class="text-center">
+            <td>{{row.id}}</td>
+            <td>{{row.studentName}}</td>
+            <td>{{row.age}}</td>
+            <td>{{row.gender}}</td>
+            <td>{{row.courseName}}</td>
+            <td>{{row.departmentName}}</td>
+            <td>{{row.hobbies}}</td>
+            <td class="text-right">
+              <button (click)="updateEmployee(row)" class="btn btn-outline-info  pl-3 pr-3 mx-2" data-toggle="modal"
+                data-target="#exampleModal"><i class="fas fa-pencil"></i> Edit</button>
+              <button (click)="deleteEmployee(row)" class="btn btn-outline-danger pl-3 "><i class="fas fa-trash"></i>
+                Delete</button>
+            </td>
+          </tr>
+        </thead>
+      </table>
+      <!-- <pagination-controls (pageChange)="pageChangeEvent($event)"></pagination-controls> -->
+    </div>
+  </div>
+</div>
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-primary" *ngIf="showAddTitle" id="exampleModalLabel">Add New Data</h5>
+        <h5 class="modal-title text-primary" *ngIf="showUpdateTitle" id="exampleModalLabel">Update Data</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formValue">
+          <div class="form-group">
+            <label for="studentName">Student Name</label>
+            <input formControlName="studentName" id="studentName" class="form-control" placeholder="Enter First Name.."
+              [ngClass]="{ 'is-invalid': submitted && f['studentName'].errors }">
+            <div *ngIf="submitted && f['studentName'].errors" class="invalid-feedback">
+              <div *ngIf="f['studentName'].errors['required']">studentName is required</div>
+              <div *ngIf="f['studentName'].errors['minlength']">
+                studentName must be at least 4 characters
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="age">Student Age</label>
+            <input id="age" formControlName="age" type="text" class="form-control" placeholder="Enter Age.."
+              [ngClass]="{ 'is-invalid': submitted && f['age'].errors }">
+            <div *ngIf="submitted && f['age'].errors" class="invalid-feedback">
+              <div *ngIf="f['age'].errors['required']">age is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="age">Student Gender</label>
+            <div class="custom-control custom-radio">
+              <input id="male" type="radio" [ngClass]="{ 'is-invalid': submitted && f['gender'].errors }"
+                class="custom-control-input" value="male" name="gender" formControlName="gender">
+              <label class="custom-control-label" for="male">Male</label>
+            </div>
+            <div class="custom-control custom-radio">
+              <input id="female" type="radio" [ngClass]="{ 'is-invalid': submitted && f['gender'].errors }"
+                class="custom-control-input" value="female" name="gender" formControlName="gender">
+              <label class="custom-control-label" for="female">Female</label>
+            </div>
+            <div *ngIf="submitted && f['gender'].errors" class="invalid-feedback">
+              <div *ngIf="f['gender'].errors['required']">gender is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Course List </label>
+            <select [ngClass]="{ 'is-invalid': submitted && f['courseName'].errors }" class="form-control"
+              id="courseName" name="courseName" formControlName="courseName">
+              <option>Choose Course</option>
+              <option *ngFor="let course of courseList">{{course.name}}</option>
+            </select>
+            <div *ngIf="submitted && f['courseName'].errors" class="invalid-feedback">
+              <div *ngIf="f['courseName'].errors['required']">courseName is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Department List </label>
+            <select [ngClass]="{ 'is-invalid': submitted && f['departmentName'].errors }" class="form-control"
+              id="departmentName" name="departmentName" formControlName="departmentName">
+              <option>Choose Department</option>
+              <option *ngFor="let department of departmentList">{{department.name}}</option>
+            </select>
+            <div *ngIf="submitted && f['departmentName'].errors" class="invalid-feedback">
+              <div *ngIf="f['departmentName'].errors['required']">departmentName is required</div>
+            </div>
+          </div>
+          <!-- <div class="form-group">
+            <label for="hobbies">Hobbies</label>
+            <div class="flex-container">
+              <div *ngFor="let hobby of checkboxes; let i=index;" class="flex-container  align-center multi-checkbox">
+                <input type="checkbox" [ngClass]="{ 'is-invalid': submitted && f['hobbies'].errors }"
+                  class="form-control" id="hobbies" name="hobbies" formControlName="hobbies">
+                {{hobby.name}}
+
+              </div>
+            </div>
+            <div *ngIf="submitted && f['hobbies'].errors" class="invalid-feedback">
+              <div *ngIf="f['hobbies'].errors['required']">hobbies is required</div>
+            </div>
+          </div> -->
+          <div class="form-group">
+            <label for="hobbies">Hobbies</label>
+          <ng-multiselect-dropdown [placeholder]="'custom placeholder'" [settings]="dropdownSettings"
+            [data]="checkboxes"  [ngClass]="{ 'is-invalid': submitted && f['hobbies'].errors }" class="form-control"
+            id="hobbies" name="hobbies" formControlName="hobbies">
+          </ng-multiselect-dropdown>
+          <div *ngIf="submitted && f['hobbies'].errors" class="invalid-feedback">
+            <div *ngIf="f['hobbies'].errors['required']">hobbies is required</div>
+          </div>
+        </div>
+          <button type="button" id="cancel" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="submit" *ngIf="showAdd" (click)="postEmployeeDetails()" class="btn btn-primary"
+            style="margin-left: 15px;">Save</button>
+          <button type="button" *ngIf="showUpdate" (click)="updateEmployeeDetails()" class="btn btn-primary"
+            style="margin-left: 15px;">Update</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

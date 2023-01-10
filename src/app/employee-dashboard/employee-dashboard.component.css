@@ -1,0 +1,5 @@
+.flex-container{
+    display: flex;
+    /* margin-left: 10px; */
+    grid-gap: 18px;
+}

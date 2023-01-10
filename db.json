@@ -1,0 +1,36 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "studentName": "Yogesh",
+      "age": "Gurav",
+      "gender": "male",
+      "courseName": "MCA",
+      "departmentName": "Master Of Computer Application",
+      "hobbies": [
+        {
+          "value": "1",
+          "name": "Music"
+        }
+      ]
+    },
+    {
+      "studentName": "Ganesh",
+      "age": "31",
+      "gender": "male",
+      "courseName": "CSE",
+      "departmentName": "Bachelor Of Computer Science",
+      "hobbies": [
+        {
+          "value": "2",
+          "name": "Chess"
+        }
+      ],
+      "id": 2
+    }
+  ],
+  "comments": [],
+  "profile": {
+    "name": "typicode"
+  }
+}
